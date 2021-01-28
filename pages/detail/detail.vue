@@ -33,7 +33,7 @@
 		<view class="recommand" v-if="ad.four">更多封面👇👇👇</view>
 		<ad-custom :unit-id="ad.three" v-if="ad.three"></ad-custom>
 		<ad :unit-id="ad.four" ad-type="video" ad-theme="white" v-if="ad.four"></ad>
-		<view class="modal" @touchmove.stop="handle" @click="closeModal" v-if="modalShow">
+		<view class="modal" @touchmove.stop="handle" @click="closeModal" v-if="modalShow && isInStock">
 			<view class="modal-content" @click.stop="openModal">
 				<view class="modal-content-body" @click="handleCopy">
 					<view class="modal-content-body-title">
@@ -66,6 +66,7 @@
 					inviteLockNum: 0,
 					lookVideoLockNum: 0,
 					getDesc: "",
+					isFree: false
 				},
 				lockEdInfo: {
 					inviteLockNum: 0,
