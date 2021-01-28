@@ -29,15 +29,16 @@ var cover = {
 		let lookVideoLockNum = adLookVideo.total
 		let inviteLockNum = invite.total
 		let taskDone = false
-		if (detail.data.isTaskTogether) {
+		console.log(detail.data)
+		if (detail.data[0].isTaskTogether) {
 			if ((lookVideoLockNum > 0 && lookVideoLockNum >= detail.data[0].lookVideoLockNum) &&
 				(inviteLockNum > 0 && inviteLockNum >= detail.data[0].inviteLockNum)) {
 				taskDone = true
 			}
 
 		} else {
-			if ((lookVideoLockNum > 0 && lookVideoLockNum >= detail.data[0].lookVideoLockNum) ||
-				(inviteLockNum > 0 && inviteLockNum >= detail.data[0].inviteLockNum)) {
+			if (
+			(lookVideoLockNum > 0 && lookVideoLockNum >= detail.data[0].lookVideoLockNum) || (inviteLockNum > 0 && inviteLockNum >= detail.data[0].inviteLockNum)) {
 				taskDone = true
 			}
 		}
