@@ -1,0 +1,59 @@
+// 在本文件中可配置云数据库初始化，数据格式见：https://uniapp.dcloud.io/uniCloud/hellodb?id=db-init
+
+// 编写完毕后对本文件点右键，可按配置规则创建表和添加数据
+
+{
+    "ad": {
+        "data": []
+    },
+    "config": {
+        "data": [
+            {
+                "name": "tips",
+                "value": [
+                    "每日限量送出红包封面，手快有，手慢无！！",
+                    "阿江 已成功领取一款红包封面",
+                    "蛋蛋互娱 已成功领取一款红包封面",
+                    "安然gril 已成功领取一款红包封面"
+                ]
+            },
+            {
+                "name": "ad",
+                "value": {
+                    "detail": {
+                        "one": "",
+                        "two": "",
+                        "three": "",
+                        "four": "",
+                        "five": ""
+                    }
+                }
+            }
+        ]
+    },
+    "coupon": [],
+    "cover": {
+        "data": [
+            {
+                "getDesc": "关注公众号\n\n 阿智智智啊\n\n 发送以下内容领取封面",
+                "inviteLockNum": 10,
+                "isFree": false,
+                "lookVideoLockNum": 0,
+                "pic": "https://img.tuguaishou.com/ips_templ_preview/w432_q100/13/33/9e/lg_3408105_1603196228_5f8ed544823c6.jpg?auth_key=2243088000-0-0-f00b740f54e472a1c784ef26653d85c8",
+                "isTaskTogether": false,
+                "isInStock": true,
+                "notice": "今日封面剩余  0  ！！",
+                "noticeShow": false
+            }
+        ]
+    },
+    "invite": {
+        "data": [
+            
+        ]
+    },
+    "user": {
+        "data": [
+        ]
+    }
+}
