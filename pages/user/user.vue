@@ -17,9 +17,16 @@
 					<image class="right" src="/static/right_h.png"></image>
 				</button>
 			</view>
+			<view class="item">
+				<image class="icon" src="/static/user_kefu.png"></image>
+				<button class="content share" open-type="contact">
+					<view>在线客服</view>
+					<image class="right" src="/static/right_h.png"></image>
+				</button>
+			</view>
 		</view>
 		<view class="version">
-			v1.0
+			v2.0
 		</view>
 	</view>
 </template>
