@@ -1,24 +1,24 @@
 <template>
 	<view class="wrapper">
-		<wyb-noticeBar :text="notice" type="vert" :show-more="false" class="notice" v-if="noticeShow && notice" />
+		<wyb-noticeBar :text="notice" type="vert" :show-more="false" class="notice" v-if="coverDetail.notice_show && notice.length > 0" />
 		<view class="cover">
 			<image :src="coverDetail.pic" mode="" class="cover-img"></image>
 		</view>
 		<ad :unit-id="ad.two" ad-type="grid" grid-opacity="0.8" grid-count="5" ad-theme="white" v-if="ad.two"></ad>
-		<view v-if="isInStock">
+		<view v-if="coverDetail.is_in_stock">
 			<view class="func">
-				<text style="font-size: 22rpx; color: #DD524D;" v-if="isTaskTogether">
+				<text style="font-size: 22rpx; color: #DD524D;" v-if="coverDetail.is_task_together && lockEdInfo.is_task_success !== true">
 					此封面需要同时完成下面的两个任务哦！！！
 				</text>
-				<button plain class="func-btn" open-type="share" v-if="coverDetail.inviteLockNum > 0">
+				<button plain class="func-btn" open-type="share" v-if="coverDetail.invite_limit > 0  && lockEdInfo.is_task_success !== true">
 					<image src="/static/share.png" mode="" class="func-btn-img"></image>
-					邀请好友领取（{{lockEdInfo.inviteLockNum}}/{{coverDetail.inviteLockNum}}）
+					邀请好友领取（{{lockEdInfo.invite_count}}/{{coverDetail.invite_limit}}）
 				</button>
-				<button plain class="func-btn" @click="lookAd" v-if="coverDetail.lookVideoLockNum > 0">
+				<button plain class="func-btn" @click="lookAd" v-if="coverDetail.ad_limit > 0  && lockEdInfo.is_task_success !== true">
 					<image src="/static/video.png" mode="" class="func-btn-img"></image>
-					观看视频领取（{{lockEdInfo.lookVideoLockNum}}/{{coverDetail.lookVideoLockNum}}）
+					观看视频领取（{{lockEdInfo.look_ad_count}}/{{coverDetail.ad_limit}}）
 				</button>
-				<button plain class="func-btn success" @click="openModal" v-if="lockEdInfo.isLocked">
+				<button plain class="func-btn success" @click="openModal" v-if="lockEdInfo.is_task_success">
 					领取封面
 				</button>
 			</view>
@@ -33,13 +33,13 @@
 		<view class="recommand" v-if="ad.four">更多封面👇👇👇</view>
 		<ad-custom :unit-id="ad.three" v-if="ad.three"></ad-custom>
 		<ad :unit-id="ad.four" ad-type="video" ad-theme="white" v-if="ad.four"></ad>
-		<view class="modal" @touchmove.stop="handle" @click="closeModal" v-if="modalShow && isInStock">
+		<view class="modal" @touchmove.stop="handle" @click="closeModal" v-if="modalShow && coverDetail.is_in_stock">
 			<view class="modal-content" @click.stop="openModal">
 				<view class="modal-content-body" @click="handleCopy">
 					<view class="modal-content-body-title">
 						领取方式(点击复制内容)
 					</view>
-					<text user-select decode class="modal-content-body-getdesc">{{coverDetail.getDesc}}</text>
+					<text user-select decode class="modal-content-body-getdesc">{{coverDetail.receive_desc}}</text>
 					<button plain class="modal-content-body-question" open-type="contact">有疑问？</button>
 				</view>
 				<image src="/static/close.png" mode="" class="modal-content-cancel" @click.stop="closeModal"></image>
@@ -62,22 +62,14 @@
 			return {
 				id: '',
 				modalShow: '',
-				coverDetail: {
-					inviteLockNum: 0,
-					lookVideoLockNum: 0,
-					getDesc: "",
-					isFree: false
-				},
-				lockEdInfo: {
-					inviteLockNum: 0,
-					lookVideoLockNum: 0,
-					isLocked: false,
-				},
+				coverDetail: {},
+				lockEdInfo: {},
 				ad: '',
 				isTaskTogether: false,
 				noticeShow: false,
 				notice: [],
-				isInStock: false
+				isInStock: false,
+				receive_data: "",
 			};
 		},
 		onLoad(e) {
@@ -98,14 +90,20 @@
 				return
 			},
 			async getCoverDetail(isFirst) {
+				
 				const res = await coverDetail({
 					id: this.id,
 					openid: getApp().globalData.openid,
 				})
-				console.log(res.result)
-				this.coverDetail = res.result.data.coverDetail
-				this.lockEdInfo = res.result.data.lockEdInfo
-				this.ad = res.result.data.ad
+				console.log(res)
+				this.coverDetail = res.cover_detail
+				this.notice = res.tips
+				this.lockEdInfo.invite_count = res.invite_count
+				this.lockEdInfo.look_ad_count = res.look_ad_count
+				this.lockEdInfo.is_task_success = res.is_task_success
+				this.modalShow = res.is_task_success
+				this.receive_data = res.receive_data
+				this.ad = res.ad_config
 				if (isFirst && this.ad) {
 					//激励视频和插屏广告
 					if (this.ad.one) {
@@ -115,17 +113,6 @@
 						this.adInit(this.ad.five);
 					}
 				}
-				if (this.lockEdInfo.isLocked) {
-					this.modalShow = true
-				}
-				this.isTaskTogether = res.result.data.coverDetail.isTaskTogether
-				this.noticeShow = res.result.data.coverDetail.noticeShow
-				if (res.result.data.coverDetail.notice && this.noticeShow) {
-					this.notice.push(res.result.data.coverDetail.notice)
-				}
-				this.isInStock = res.result.data.coverDetail.isInStock
-				// console.log(1111, this.isTaskTogether, res.result.data.isTaskTogether)
-				uni.hideLoading()
 			},
 			lookAd() {
 				rewardedVideoAd.show().catch(() => {
@@ -196,7 +183,8 @@
 				this.modalShow = false
 			},
 			handleCopy() {
-				let data = this.coverDetail.getDesc;
+				let data = this.receive_data;
+				console.log(data)
 				wx.setClipboardData({
 					data: data,
 					success(res) {},

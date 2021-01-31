@@ -12,6 +12,7 @@ exports.main = async (event, context) => {
 	//简单路由判断
 	switch (event.path) {
 		//授权登录
+		// 切换到了api
 		case '/login':
 			var loginModelData = await loginModel(event.queryStringParameters.code)
 			resp.user = loginModelData
@@ -19,9 +20,9 @@ exports.main = async (event, context) => {
 			break;
 		//首页
 		case '/cover':
-			resp.couponList = await coverModel.coupons()
-			resp.coverList = await coverModel.list()
-			resp.tips = await coverModel.tips()
+			resp.couponList = await coverModel.coupons()  // t
+			resp.coverList = await coverModel.list() // t
+			resp.tips = await coverModel.tips()  // t
 			return response.success(resp)
 			break;
 		//封面详情

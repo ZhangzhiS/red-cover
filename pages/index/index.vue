@@ -20,7 +20,7 @@
 		</view>
 		<wyb-noticeBar :text="tips" type="vert" :show-more="false" class="notice" v-if="tips.length > 0" />
 		<view class="list">
-			<view class="list-item" v-for="(cover, i) in coverList" @click="goDetail(cover._id)" :key="i">
+			<view class="list-item" v-for="(cover, i) in coverList" @click="goDetail(cover.id)" :key="i">
 				<image :src="cover.pic" mode="" class="list-item-img"></image>
 			</view>
 		</view>
@@ -29,7 +29,7 @@
 
 <script>
 	import {
-		cover
+		cover, cps, tip
 	} from '../../request'
 	export default {
 		data() {
@@ -47,6 +47,7 @@
 		},
 		methods: {
 			goDetail(id) {
+				console.log(id)
 				uni.navigateTo({
 					url: `/pages/detail/detail?id=${id}`
 				});
@@ -55,18 +56,18 @@
 				uni.showLoading({
 					title: "获取封面中"
 				})
-				const res = await cover()
-				this.couponList = res.result.data.couponList
-				this.coverList = res.result.data.coverList
-				this.tips = res.result.data.tips
+				// const res = await cover()
+				this.couponList = await cps()
+				this.coverList = await cover()
 				uni.hideLoading()
+				this.tips = await tip()
 			},
 			toCoupon(i) {
 				console.log(this.couponList[i])
-				if (this.couponList[i].minapp) {
+				if (this.couponList[i].appid) {
 					wx.navigateToMiniProgram({
-						appId: this.couponList[i].minapp.appid,
-						path: this.couponList[i].minapp.path,
+						appId: this.couponList[i].appid,
+						path: this.couponList[i].path,
 						success(res) {
 							// 打开成功
 						}
@@ -181,7 +182,7 @@
 					margin: auto;
 					width: 220rpx;
 					height: 360rpx;
-					border-radius: 8px 8px 0 0;
+					border-radius: 8px 8px 8px 8px;
 				}
 			}
 		}

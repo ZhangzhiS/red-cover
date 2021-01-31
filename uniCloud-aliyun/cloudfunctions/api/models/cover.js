@@ -1,14 +1,17 @@
 const db = uniCloud.database();
 
 var cover = {
+	// 可以不改
 	list: async () => {
 		let list = await db.collection('cover').orderBy("sort", "desc").get();
 		return list.data
 	},
+	// 可以不改
 	coupons: async () => {
 		let coupons = await db.collection('coupon').orderBy("sort", "desc").get();
 		return coupons.data
 	},
+	// 可以不改
 	tips: async () => {
 		let tips = await db.collection('config').where({
 			name: "tips"

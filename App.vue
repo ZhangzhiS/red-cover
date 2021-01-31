@@ -4,20 +4,30 @@ import { login, inviteTrack } from "./request"
 
 export default {
 	onLaunch: async function(e) {
-		console.log(e)
 		console.log('App Launch');
 		var openid = uni.getStorageSync('openid');
+
 		if (openid) {
 			this.globalData.openid = openid;
-			this.inviteTrack(e.query.openid, openid, e.query.id)
+			// this.inviteTrack(e.query.openid, openid, e.query.id)
+			this.inviteTrack({
+				invite_openid: openid,
+				openid: e.query.openid,
+				id: e.query.id,
+			})
 		} else {
 			// 登录
 			const [loginError, loginRes] = await uni.login();
-			// 发送 res.code 到后台换取 openId, sessionKey, unionId
+			// console.log(code)
 			const res = await login({code: loginRes.code})
-			this.globalData.openid = res.result.data.user.openid;
-			uni.setStorageSync('openid', res.result.data.user.openid);
+			this.globalData.openid = res.openid;
+			uni.setStorageSync('openid', res.openid);
 			this.inviteTrack(e.query.openid, this.globalData.openid, e.query.id)		
+			this.inviteTrack({
+				invite_openid: openid,
+				openid: e.query.openid,
+				id: e.query.id,
+			})		
 		}
 	},
 	onShow: function() {
