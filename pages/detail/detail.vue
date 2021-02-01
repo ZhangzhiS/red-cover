@@ -30,7 +30,6 @@
 				</button>
 			</view>
 		</view>
-		<view class="recommand" v-if="ad.four">更多封面👇👇👇</view>
 		<ad-custom :unit-id="ad.three" v-if="ad.three"></ad-custom>
 		<ad :unit-id="ad.four" ad-type="video" ad-theme="white" v-if="ad.four"></ad>
 		<view class="modal" @touchmove.stop="handle" @click="closeModal" v-if="modalShow && coverDetail.is_in_stock">
@@ -50,8 +49,8 @@
 
 <script>
 	import {
-		coverDetail,
-		lookVideo
+		coverDetailApi,
+		lookVideoApi
 	} from '../../request';
 
 	var rewardedVideoAd = null
@@ -70,6 +69,7 @@
 				notice: [],
 				isInStock: false,
 				receive_data: "",
+				isLoad: false
 			};
 		},
 		onLoad(e) {
@@ -77,7 +77,9 @@
 			this.getCoverDetail(true)
 		},
 		onShow(e) {
-			this.getCoverDetail(false)
+			if (this.isLoad) {
+				this.getCoverDetail(false)
+			}
 		},
 		onShareAppMessage(res) {
 			var shareConfig = getApp().shareConfig()
@@ -90,12 +92,13 @@
 				return
 			},
 			async getCoverDetail(isFirst) {
+				console.log(isFirst)
 				
-				const res = await coverDetail({
+				const res = await coverDetailApi({
 					id: this.id,
 					openid: getApp().globalData.openid,
 				})
-				console.log(res)
+				// console.log(res)
 				this.coverDetail = res.cover_detail
 				this.notice = res.tips
 				this.lockEdInfo.invite_count = res.invite_count
@@ -113,6 +116,7 @@
 						this.adInit(this.ad.five);
 					}
 				}
+				this.isLoad = true
 			},
 			lookAd() {
 				rewardedVideoAd.show().catch(() => {
@@ -170,7 +174,7 @@
 			},
 			//看视频上报
 			async trackLookVideo(isEnded) {
-				await lookVideo({
+				await lookVideoApi({
 					openid: getApp().globalData.openid,
 					id: this.id,
 					isEnded,
@@ -184,7 +188,7 @@
 			},
 			handleCopy() {
 				let data = this.receive_data;
-				console.log(data)
+				// console.log(data)
 				wx.setClipboardData({
 					data: data,
 					success(res) {},

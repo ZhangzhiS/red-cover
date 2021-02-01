@@ -1,6 +1,6 @@
 <script>
 /* 本项目为开源项目，作者微信：zheng593446899，如有问题可联系*/
-import { login, inviteTrack } from "./request"
+import { loginApi, inviteTrackApi } from "./request"
 
 export default {
 	onLaunch: async function(e) {
@@ -9,25 +9,15 @@ export default {
 
 		if (openid) {
 			this.globalData.openid = openid;
-			// this.inviteTrack(e.query.openid, openid, e.query.id)
-			this.inviteTrack({
-				invite_openid: openid,
-				openid: e.query.openid,
-				id: e.query.id,
-			})
+			this.inviteTrack(e.query.openid, openid, e.query.id)
 		} else {
 			// 登录
 			const [loginError, loginRes] = await uni.login();
 			// console.log(code)
-			const res = await login({code: loginRes.code})
+			const res = await loginApi({code: loginRes.code})
 			this.globalData.openid = res.openid;
 			uni.setStorageSync('openid', res.openid);
-			this.inviteTrack(e.query.openid, this.globalData.openid, e.query.id)		
-			this.inviteTrack({
-				invite_openid: openid,
-				openid: e.query.openid,
-				id: e.query.id,
-			})		
+			this.inviteTrack(e.query.openid, this.globalData.openid, e.query.id)
 		}
 	},
 	onShow: function() {
@@ -50,12 +40,14 @@ export default {
 			return messages[Math.floor(Math.random()*messages.length)];
 		},
 		//邀请上报
-		inviteTrack(inviteOpenid, openid, id){
-			if(inviteOpenid && openid && inviteOpenid != openid){
-				console.log(inviteOpenid, openid)
-				inviteTrack({
-					inviteOpenid,
-					openid,
+		// shareBelongOpenid 分享链接所属的用户
+		// beInviteOpenid 被邀请的用户的id，这里指当前小程序的注册用户
+		inviteTrack(shareBelongOpenid, beInviteOpenid, id){
+			if(beInviteOpenid && shareBelongOpenid && (beInviteOpenid != shareBelongOpenid)){
+				// console.log(beInviteOpenid, shareBelongOpenid)
+				inviteTrackApi({
+					beInviteOpenid,
+					shareBelongOpenid,
 					id,
 				})
 			}

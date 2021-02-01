@@ -39,7 +39,7 @@
 			};
 		},
 		onLoad() {
-			this.userInfo = getApp().globalData.userInfo
+			this.userInfo = uni.getStorageSync("userInfo")
 		},
 		onShareAppMessage(res) {
 			return getApp().shareConfig()

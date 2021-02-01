@@ -1,10 +1,10 @@
 // const API_HOST = "127.0.0.1:8000"
-const API_HOST = "api.m.zzs7.top"
+const API_HOST = "api.m-pro.zzs7.top"
 const PROTOCOL = "https://"
 // const PROTOCOL = "http://"
 
 // 用户登录
-async function login(queryStringParameters = {}) {
+async function loginApi(queryStringParameters = {}) {
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url: PROTOCOL+API_HOST+"/api/v1/wx/app/1/login",
@@ -20,7 +20,7 @@ async function login(queryStringParameters = {}) {
 	})
 }
 
-async function cover(queryStringParameters = {}) {
+async function coverListApi(queryStringParameters = {}) {
 	return new Promise((resolve, reject) => {
 		let url = "/api/v1/wx/app/1/cover"
 		if (queryStringParameters.id) {
@@ -37,12 +37,11 @@ async function cover(queryStringParameters = {}) {
 	})
 }
 
-async function cps(queryStringParameters = {}) {
+async function cpsApi(queryStringParameters = {}) {
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url: PROTOCOL+API_HOST+"/api/v1/wx/app/1/cps",
 			method: "GET",
-			
 			success: (res) => {
 				// let data = res.data
 				resolve(res.data)
@@ -51,7 +50,7 @@ async function cps(queryStringParameters = {}) {
 	})
 }
 
-async function tip(queryStringParameters = {}) {
+async function tipApi(queryStringParameters = {}) {
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url: PROTOCOL+API_HOST+"/api/v1/wx/app/1/tip",
@@ -64,15 +63,7 @@ async function tip(queryStringParameters = {}) {
 	})
 }
 
-// async function coverDetail(queryStringParameters = {}) {
-//     const res = await uniCloud.callFunction({
-//         name: "api",
-//         data: { path: '/cover/detail', queryStringParameters },
-//     });
-//     return res
-// }
-
-async function coverDetail(queryStringParameters = {}) {
+async function coverDetailApi(queryStringParameters = {}) {
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url: PROTOCOL+API_HOST+"/api/v1/wx/app/1/cover/detail?cover_id="+queryStringParameters.id + "&openid=" + queryStringParameters.openid,
@@ -85,22 +76,15 @@ async function coverDetail(queryStringParameters = {}) {
 	})
 }
 
-// async function lookVideo(queryStringParameters = {}) {
-//     const res = await uniCloud.callFunction({
-//         name: "api",
-//         data: { path: '/look/video', queryStringParameters },
-//     });
-//     return res
-// }
-
-async function lookVideo(queryStringParameters = {}) {
+async function lookVideoApi(queryStringParameters = {}) {
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url: PROTOCOL+API_HOST+"/api/v1/wx/app/1/invite/track",
 			method: "POST",
 			data: {
 				"openid": queryStringParameters.openid,
-				"invite_openid": queryStringParameters.inviteOpenid
+				"status": queryStringParameters.isEnded,
+				"id": queryStringParameters.id
 			},
 			success: (res) => {
 				// let data = res.data
@@ -110,24 +94,16 @@ async function lookVideo(queryStringParameters = {}) {
 	})
 }
 
-// async function inviteTrack(queryStringParameters = {}) {
-//     const res = await uniCloud.callFunction({
-//         name: "api",
-//         data: { path: '/invite/track', queryStringParameters },
-//     });
-//     return res
-// }
-
-async function inviteTrack(queryStringParameters = {}) {
+async function inviteTrackApi(queryStringParameters = {}) {
 	console.log(queryStringParameters)
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url: PROTOCOL+API_HOST+"/api/v1/wx/app/1/invite/track",
 			method: "POST",
 			data: {
-				"openid": queryStringParameters.inviteOpenid,
-				"invite_openid": queryStringParameters.openid,
-				"id": queryStringParameters.id
+				"openid": queryStringParameters.shareBelongOpenid,
+				"invite_openid": queryStringParameters.beInviteOpenid,
+				"cover_id": queryStringParameters.id
 			},
 			success: (res) => {
 				// let data = res.data
@@ -139,5 +115,5 @@ async function inviteTrack(queryStringParameters = {}) {
 
 
 export {
-    login, cover, coverDetail, lookVideo, inviteTrack, cps, tip
+    loginApi, coverListApi, coverDetailApi, lookVideoApi, inviteTrackApi, cpsApi, tipApi
 }

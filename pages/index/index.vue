@@ -29,7 +29,7 @@
 
 <script>
 	import {
-		cover, cps, tip
+		coverListApi, cpsApi, tipApi
 	} from '../../request'
 	export default {
 		data() {
@@ -57,10 +57,10 @@
 					title: "获取封面中"
 				})
 				// const res = await cover()
-				this.couponList = await cps()
-				this.coverList = await cover()
+				this.couponList = await cpsApi()
+				this.coverList = await coverListApi()
 				uni.hideLoading()
-				this.tips = await tip()
+				this.tips = await tipApi()
 			},
 			toCoupon(i) {
 				console.log(this.couponList[i])
