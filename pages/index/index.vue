@@ -16,13 +16,15 @@
 					</view>
 				</view>
 			</view>
-
 		</view>
 		<wyb-noticeBar :text="tips" type="vert" :show-more="false" class="notice" v-if="tips.length > 0" />
 		<view class="list">
 			<view class="list-item" v-for="(cover, i) in coverList" @click="goDetail(cover.id)" :key="i">
 				<image :src="cover.pic" mode="" class="list-item-img"></image>
 			</view>
+		</view>
+		<view  class="version">
+			<ad unit-id="adunit-fc697f665fcf28ba"></ad>
 		</view>
 	</view>
 </template>
@@ -188,5 +190,14 @@
 		}
 
 
+	}
+	.version {
+		// position: fixed;
+		bottom: 20rpx;
+		display: block;
+		width: 100%;
+		text-align: center;
+		font-size: 28rpx;
+		color: #666;
 	}
 </style>

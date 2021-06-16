@@ -79,12 +79,12 @@ async function coverDetailApi(queryStringParameters = {}) {
 async function lookVideoApi(queryStringParameters = {}) {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: PROTOCOL+API_HOST+"/api/v1/wx/app/1/invite/track",
+			url: PROTOCOL+API_HOST+"/api/v1/wx/app/1/ad/track",
 			method: "POST",
 			data: {
 				"openid": queryStringParameters.openid,
 				"status": queryStringParameters.isEnded,
-				"id": queryStringParameters.id
+				"cover_id": queryStringParameters.id
 			},
 			success: (res) => {
 				// let data = res.data

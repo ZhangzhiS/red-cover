@@ -26,7 +26,7 @@
 			</view>
 		</view>
 		<view class="version">
-			v2.0
+			<ad unit-id="adunit-fc697f665fcf28ba"></ad>
 		</view>
 	</view>
 </template>

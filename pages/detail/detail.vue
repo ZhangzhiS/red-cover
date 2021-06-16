@@ -4,7 +4,6 @@
 		<view class="cover">
 			<image :src="coverDetail.pic" mode="" class="cover-img"></image>
 		</view>
-		<ad :unit-id="ad.two" ad-type="grid" grid-opacity="0.8" grid-count="5" ad-theme="white" v-if="ad.two"></ad>
 		<view v-if="coverDetail.is_in_stock">
 			<view class="func">
 				<text style="font-size: 22rpx; color: #DD524D;" v-if="coverDetail.is_task_together && lockEdInfo.is_task_success !== true">
@@ -12,26 +11,30 @@
 				</text>
 				<button plain class="func-btn" open-type="share" v-if="coverDetail.invite_limit > 0  && lockEdInfo.is_task_success !== true">
 					<image src="/static/share.png" mode="" class="func-btn-img"></image>
-					邀请好友领取（{{lockEdInfo.invite_count}}/{{coverDetail.invite_limit}}）
+					好友积分领取（{{lockEdInfo.invite_count}}/{{coverDetail.invite_limit}}）
 				</button>
+				<text style="font-size: 22rpx; color: #DD524D;">
+					点击好友积分领取才能成功分享哦！！！
+				</text>
 				<button plain class="func-btn" @click="lookAd" v-if="coverDetail.ad_limit > 0  && lockEdInfo.is_task_success !== true">
 					<image src="/static/video.png" mode="" class="func-btn-img"></image>
-					观看视频领取（{{lockEdInfo.look_ad_count}}/{{coverDetail.ad_limit}}）
+					视频积分领取（{{lockEdInfo.look_ad_count}}/{{coverDetail.ad_limit}}）
 				</button>
 				<button plain class="func-btn success" @click="openModal" v-if="lockEdInfo.is_task_success">
-					领取封面
+					任务完成啦，免费领封面
 				</button>
 			</view>
 		</view>
 		<view v-else>
 			<view class="func">
 				<button plain class="func-btn field" disabled="true">
-					暂未开放
+					今天送完咯，明天再来呀
 				</button>
 			</view>
 		</view>
-		<ad-custom :unit-id="ad.three" v-if="ad.three"></ad-custom>
-		<ad :unit-id="ad.four" ad-type="video" ad-theme="white" v-if="ad.four"></ad>
+		<view class="version">
+			<ad unit-id="adunit-fc697f665fcf28ba"></ad>
+		</view>
 		<view class="modal" @touchmove.stop="handle" @click="closeModal" v-if="modalShow && coverDetail.is_in_stock">
 			<view class="modal-content" @click.stop="openModal">
 				<view class="modal-content-body" @click="handleCopy">
@@ -314,5 +317,14 @@
 			}
 
 		}
+	}
+	.version {
+		// position: fixed;
+		bottom: 60rpx;
+		display: block;
+		width: 100%;
+		text-align: center;
+		font-size: 28rpx;
+		color: #666;
 	}
 </style>
